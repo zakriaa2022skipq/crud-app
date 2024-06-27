@@ -2,9 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL:
-    process.env.environment === "development"
-      ? process.env.SERVER_URL_DEV
-      : SERVER_URL_PROD,
+   "https://crud-app-backend-kj06.onrender.com"
 });
 
 export default instance;
