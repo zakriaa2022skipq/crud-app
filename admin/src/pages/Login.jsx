@@ -40,7 +40,7 @@ const Login = () => {
   });
   const loginMutation = useMutation(
     (loginData) =>
-      axios.post("api/v1/user/login", loginData, { withCredentials: true }),
+      axios.post("api/v1/admin/login", loginData, { withCredentials: true }),
     {
       onSuccess: () => {
         dispatch(updateLoginStatus(true));

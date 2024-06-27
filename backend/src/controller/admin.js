@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Post = require("../models/post");
 const asyncHandler = require("express-async-handler");
-const { hashPassword } = require("../util/password");
+const { hashPassword, verifyPassword } = require("../util/password");
 
 const registerAdmin = asyncHandler(async (req, res) => {
   const { name, email, password, username } = req.body;
@@ -26,7 +26,32 @@ const registerAdmin = asyncHandler(async (req, res) => {
   });
   return res.status(201).json({ msg: "admin user registered successfully" });
 });
-
+const loginAdmin = asyncHandler(async (req, res) => {
+  const { password, username } = req.body;
+  const userExists = await User.findOne({ username });
+  if (!userExists) {
+    req.statusCode = 400;
+    throw new Error("Invalid username or password");
+  }
+  const isCorrectPassword = await verifyPassword(password, userExists.password);
+  if (!isCorrectPassword) {
+    AuthLogger.warn("Failed login attempt");
+    req.statusCode = 400;
+    throw new Error("Invalid username or password");
+  }
+  if (!userExists.isAdmin) {
+    req.statusCode = 400;
+    throw new Error("User is not admin");
+  }
+  const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET);
+  return res
+    .cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ msg: "Logged in successfully" });
+});
 const deleteUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
   const posts = await Post.deleteMany({ userId });
@@ -80,6 +105,7 @@ const getLeaders = asyncHandler(async (req, res) => {
 });
 module.exports = {
   registerAdmin,
+  loginAdmin,
   deleteUser,
   getLeaders,
 };
