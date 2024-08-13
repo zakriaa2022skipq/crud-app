@@ -3,7 +3,9 @@ const User = require("../models/user");
 const Post = require("../models/post");
 const asyncHandler = require("express-async-handler");
 const { hashPassword, verifyPassword } = require("../util/password");
+const winston = require("winston");
 
+const AuthLogger = winston.loggers.get("AuthLogger");
 const registerAdmin = asyncHandler(async (req, res) => {
   const { name, email, password, username } = req.body;
   const userExists = await User.findOne({ username });
