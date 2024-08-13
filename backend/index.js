@@ -14,7 +14,7 @@ const { errorMiddleware } = require("./src/middleware/error");
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
-app.use(cookieParser(process.env.COOKIE_SECRET,{sameSite:'none'}));
+app.use(cookieParser(process.env.COOKIE_SECRET,{sameSite:'none',secure:true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
