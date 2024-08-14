@@ -48,6 +48,8 @@ const loginUser = asyncHandler(async (req, res) => {
     .cookie("access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite:'none',
+      
     })
     .status(200)
     .json({ msg: "Logged in successfully" });
