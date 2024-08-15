@@ -56,7 +56,7 @@ const Register = () => {
     },
   });
   const registerMutation = useMutation(
-    (registerData) => axios.post("api/v1/user/register", registerData),
+    (registerData) => axios.post("api/v1/admin/register", registerData),
     {
       onSuccess: () => {
         navigate("/signin");
