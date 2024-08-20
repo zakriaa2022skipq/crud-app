@@ -48,11 +48,10 @@ const postDetail = asyncHandler(async (req, res) => {
 });
 const updatePost = asyncHandler(async (req, res) => {
   const { text, title } = req.body;
-  const userId = req.user;
   const postId = req.params.postId;
 
   const newPost = await Post.findOneAndUpdate(
-    { userId, _id: postId },
+    { _id: postId },
     { text, title },
     {
       new: true,
@@ -64,9 +63,8 @@ const updatePost = asyncHandler(async (req, res) => {
   return res.status(400).json({ msg: "Post cannot be updated" });
 });
 const deletePost = asyncHandler(async (req, res, next) => {
-  const userId = req.user;
   const postId = req.params.postId;
-  const post = await Post.findOneAndDelete({ userId, _id: postId });
+  const post = await Post.findOneAndDelete({  _id: postId });
   if (post) {
     return res.status(200).json({ msg: "post deleted successfully" });
   }
@@ -99,10 +97,29 @@ const getAllUserPosts = asyncHandler(async (req, res) => {
   return res.status(200).json({ posts });
 });
 
+const getTimeLinePosts = asyncHandler(async (req,res) => {
+  const defaultPage = 0;
+  const defaultDocs = 10;
+  const docsPerPage = parseInt(req.query.limit) || defaultDocs;
+  const currentPage = parseInt(req.query.page) || defaultPage;
+  const posts = await Post.aggregate([
+    { $sort: { createdAt: -1, _id: 1 } },
+    { $skip: docsPerPage * currentPage },
+    { $limit: docsPerPage },
+    {
+      $project: {
+        userId: 0,
+      },
+    },
+  ]);
+  return res.status(200).json({ posts });
+})
+
 module.exports = {
   createPost,
   updatePost,
   deletePost,
   postDetail,
   getAllUserPosts,
+  getTimeLinePosts
 };

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,18 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import axios from "@/src/util/axios";
-import { Loader2 } from "lucide-react";
 import { forwardRef, useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import axios from "@/src/util/axios";
 import { toast } from "sonner";
-const serverURL = import.meta.env.VITE_SERVER_URL
+import { Loader2 } from "lucide-react";
 
-const UserCard = forwardRef(({ userData, refetch }, ref) => {
+const PostCard = forwardRef(({ post, refetch }, ref) => {
+  const postDate = new Date(post?.createdAt).toLocaleDateString();
+  const navigate = useNavigate();
   const [errMessage, setErrMessage] = useState("");
-  const deleteUserMutation = useMutation(
+  const deletePostMutation = useMutation(
     () =>
-      axios.delete(`api/v1/admin/deleteuser/${userData._id}`, {
+      axios.delete(`api/v1/post/${post._id}`, {
         withCredentials: true,
       }),
     {
@@ -41,44 +42,44 @@ const UserCard = forwardRef(({ userData, refetch }, ref) => {
   );
 
   useEffect(() => {
-    if (deleteUserMutation.isError) {
+    if (deletePostMutation.isError) {
       toast.error(errMessage);
     }
-  }, [errMessage, deleteUserMutation.isError]);
+  }, [errMessage, deletePostMutation.isError]);
 
   return (
     <div ref={ref} className="mx-auto  self-center">
       <Card className="w-[350px] ">
         <CardHeader>
-          <CardTitle>Stats</CardTitle>
+          <CardTitle>{post?.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          {userData?.user_data.profilepic && (
-            <Avatar>
-              <AvatarImage
-                src={`${serverURL}/public/profile/${userData?.user_data.profilepic}`}
-                alt="profile"
-              />
-            </Avatar>
-          )}
-          <p>No of posts {userData?.posts}</p>
-          <p>Username {userData?.user_data.username}</p>
-          <p>email {userData?.user_data.email}</p>
+          <p>{post?.text}</p>
+          <p>Date posted:{postDate}</p>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
             onClick={() => {
-              deleteUserMutation.mutate();
+              navigate(`/post/edit/${post._id}`, { state: { post } });
+            }}
+            title="edit story"
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              deletePostMutation.mutate();
             }}
           >
-            {deleteUserMutation.isLoading && (
+            {deletePostMutation.isLoading && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Delete User & Posts
+            Delete
           </Button>
         </CardFooter>
       </Card>
     </div>
   );
 });
-export default UserCard;
+export default PostCard;

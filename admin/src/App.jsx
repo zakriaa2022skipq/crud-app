@@ -18,6 +18,7 @@ import PasswordReset from "./pages/PasswordReset";
 import PasswordResetReq from "./pages/PasswordResetReq";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
+import Timeline from "./pages/Timeline";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function App() {
         <Toaster position="top-center" closeButton richColors />
         <Routes>
           <Route element={<PrivateRoutes />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Timeline />} />
             <Route path="/post/new" element={<CreatePost />} />
             <Route path="/post/edit/:postId" element={<EditPost />} />
             <Route path="/profile/me" element={<Profile />} />

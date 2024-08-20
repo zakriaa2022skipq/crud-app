@@ -9,11 +9,11 @@ function Landing() {
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Blogga
         </h1>
-        <h2 className="leading-7 my-6">Join now to create your posts</h2>
+        <h2 className="leading-7 my-6">Your source for information packed articles</h2>
         <div className="flex flex-col gap-4">
           <Button
             onClick={() => {
-              navigate("/signin");
+              navigate("/home");
             }}
             sx={{
               color: "hsl(169, 79%, 37%)",
@@ -24,23 +24,9 @@ function Landing() {
               },
             }}
           >
-            Already have an account? Signin
+            Start reading!!!
           </Button>
-          <Button
-            sx={{
-              color: "hsl(169, 79%, 37%)",
-              borderColor: "hsl(180, 27%, 58%)",
-              ":hover": {
-                borderColor: "hsl(169, 79%, 48%)",
-                backgroundColor: "tranparent",
-              },
-            }}
-            onClick={() => {
-              navigate("/register");
-            }}
-          >
-            {`Don't have an account? Signup`}
-          </Button>
+         
         </div>
       </div>
     </div>

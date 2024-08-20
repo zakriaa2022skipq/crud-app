@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+const serverURL = import.meta.env.VITE_SERVER_URL
 
 const Profile = () => {
   const user = useSelector((state) => state.user);
@@ -29,7 +30,7 @@ const Profile = () => {
                 className="mx-auto my-8 w-[100px] h-[100px]"
               >
                 <AvatarImage
-                  src={`${process.env.SERVER_URL}/public/profile/${user.profilepic}`}
+                  src={`${serverURL}/public/profile/${user.profilepic}`}
                   alt="profile"
                 />
               </Avatar>

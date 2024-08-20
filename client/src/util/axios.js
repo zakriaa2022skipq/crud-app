@@ -1,8 +1,8 @@
 import axios from "axios";
-
+const serverURL = import.meta.env.VITE_SERVER_URL
 const instance = axios.create({
   baseURL:
-   "https://crud-app-backend-kj06.onrender.com"
+   serverURL
 });
 
 export default instance;

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "@/src/util/axios";
 import { updateLoginStatus } from "../features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+const serverURL = import.meta.env.VITE_SERVER_URL
 
 const Navbar = ({ color }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -92,7 +93,7 @@ const Navbar = ({ color }) => {
                 {profilepic && (
                   <Avatar title={username}>
                     <AvatarImage
-                      src={`${process.env.SERVER_URL}/public/profile/${profilepic}`}
+                      src={`${serverURL}/public/profile/${profilepic}`}
                       alt="profile"
                     />
                   </Avatar>

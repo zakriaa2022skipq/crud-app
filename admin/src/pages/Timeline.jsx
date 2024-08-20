@@ -7,13 +7,15 @@ import { useInfiniteQuery } from "react-query";
 import { LoadingSpinner } from "@/components/ui/loadingspinner";
 import Navbar from "../components/Navbar";
 
-const Home = () => {
+const Timeline = () => {
   const postLimit = 5;
   const { ref, inView } = useInView();
   const [errMessage, setErrMessage] = useState("");
   const fetchPosts = (pageParam) =>
     axios
-      .get(`api/v1/post/timeline?limit=${postLimit}&page=${pageParam}`, )
+      .get(`api/v1/post/timeline?limit=${postLimit}&page=${pageParam}`, {
+        withCredentials: true,
+      })
       .then((response) => response.data.posts);
 
   const {
@@ -93,4 +95,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Timeline;

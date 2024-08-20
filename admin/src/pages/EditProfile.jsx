@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import Navbar from "../components/Navbar";
+const serverURL = import.meta.env.VITE_SERVER_URL
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ const EditProfile = () => {
               className="mx-auto my-8 w-[100px] h-[100px]"
             >
               <AvatarImage
-                src={`${process.env.SERVER_URL}/public/profile/${userDetail.profilepic}`}
+                src={`${serverURL}/public/profile/${userDetail.profilepic}`}
                 alt="profile"
               />
             </Avatar>
